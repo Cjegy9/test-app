@@ -1,41 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import 'bootstrap/less/bootstrap.less';
 import './App.css';
-import Navigation from './Nav.js';
+import Skills from './components/Skills/Skills';
 
 class App extends Component {
     constructor() {
         super();
 
         this.state = {
-            data: []
+            data: [],
+            heroId: "84421657",
+            battleTag: ""
         }
     };
 
     getProfileData() {
         return fetch("https://us.api.battle.net/d3/profile/Mildlysaucy%231844/?locale=en_US&apikey=4nguzhmcnb6x9uueqwhnfwkvuxsst5h3")
-            .then((response) => response.json())
-            .then((responseJson) => {
-                return this.setState({data: responseJson})
+            .then((res) => res.json())
+            .then((resJson) => {
+                return this.setState({data: resJson, battleTag: resJson.battleTag})
             })
     };
 
-
     componentDidMount() {
+        console.log("app");
         this.getProfileData();
     };
 
   render() {
     return (
       <div className="App">
-        <Navigation />
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
+        <Skills
+          battleTag={this.state.data.battleTag}
+          heroId={this.state.heroId}
+        />
         <p className="App-intro">
-          To get started, edit <code>{this.state.data.battleTag}</code> and save to reload.
+          To get started, edit <code>{this.state.data.name}</code> and save to reload.
         </p>
       </div>
     );
